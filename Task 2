@@ -1,1 +1,60 @@
+#include <iostream>
+#include <fstream>
+#include <string>
 
+using namespace std;
+
+int Positive(int num) {
+    return (num > 0) ? 1 : 0;
+}
+int Negative(int num) {
+    return (num < 0) ? 1 : 0;
+}
+int Zero(int num) {
+    return (num == 0) ? 1 : 0;
+}
+int Words(const string& line) {
+    int count = 0;
+    string word;
+    while (iss >> word) {
+        count++;
+    }
+    
+    return count;
+}
+int main() {
+    ifstream inputFile("input.txt");
+    ofstream outputFile("output.txt");
+    string line;
+    int positiveCount = 0;
+    int negativeCount = 0;
+    int zeroCount = 0;
+    int wordCount = 0;
+    
+    if (!inputFile) {
+        cout << "Failed to open input file." << endl;
+        return 1;
+    }
+    while (getline(inputFile, line)) {
+        int num;
+        istringstream iss(line);
+        
+        while (iss >> num) {
+            positiveCount += Positive(num);
+            negativeCount += Negative(num);
+            zeroCount += Zero(num);
+        }
+        wordCount += Words(line);
+        outputFile << "Positive numbers: " << positiveCount << endl;
+        outputFile << "Negative numbers: " << negativeCount << endl;
+        outputFile << "Zero numbers: " << zeroCount << endl;
+        outputFile << "Word count: " << wordCount << endl;
+    }
+    
+    inputFile.close();
+    outputFile.close();
+    
+    cout << "Counting is completed." << endl;
+    
+    return 0;
+}
